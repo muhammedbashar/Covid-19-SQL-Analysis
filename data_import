@@ -1,32 +1,33 @@
-# Large CSV File Upload into MySQL Using CMD
+Large CSV Ingestion into MySQL Using Git Bash / CMD
 
-# (My Portfolio Project Ingestion Process)
+(Portfolio Project – Command-Based Workflow)
 
-# This document explains how I uploaded large CSV files into MySQL using Command Prompt (CMD) for my portfolio project.
+# ------------------------------------------------------------
+# STEP 0: Open Git Bash or CMD
+# ------------------------------------------------------------
+# Navigate is optional; MySQL is started directly using full path
 
-# Database was created in MySQL Workbench
+# ------------------------------------------------------------
+# STEP 1: Start MySQL with LOCAL INFILE enabled
+# ------------------------------------------------------------
+"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe" --local-infile=1 -u root -p
 
-# All remaining steps were executed via CMD
+-- ------------------------------------------------------------
+-- STEP 2: Enable and verify local file loading
+-- ------------------------------------------------------------
+SET GLOBAL local_infile = 1;
+SHOW VARIABLES LIKE 'local_infile';
 
-# Data source: https://ourworldindata.org/covid-deaths
-
-# Step 1: Start MySQL from CMD with Local File Support
-"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" --local-infile=1 -u root -p
-
-# Step 2: Enable and Verify Local File Loading
- SET GLOBAL local_infile = 1;
- SHOW VARIABLES LIKE 'local_infile';
-
-
-Expected result:
-
-local_infile | ON
-
-Step 3: Use Portfolio Database
+-- ------------------------------------------------------------
+-- STEP 3: Use portfolio database
+-- (Database was created earlier in MySQL Workbench)
+-- ------------------------------------------------------------
 USE portfolio_project;
 
-Step 4: Create Tables (Schema Defined Before Import)
-Table: covid_deaths
+-- ------------------------------------------------------------
+-- STEP 4: Create table - covid_deaths
+-- Schema defined before import to control data types
+-- ------------------------------------------------------------
 CREATE TABLE covid_deaths (
     iso_code VARCHAR(10),
     continent VARCHAR(50),
@@ -56,7 +57,9 @@ CREATE TABLE covid_deaths (
     weekly_hosp_admissions_per_million DOUBLE
 );
 
-Table: covid_vaccinations
+-- ------------------------------------------------------------
+-- STEP 5: Create table - covid_vaccinations
+-- ------------------------------------------------------------
 CREATE TABLE covid_vaccinations (
     iso_code VARCHAR(10),
     continent VARCHAR(50),
@@ -97,8 +100,9 @@ CREATE TABLE covid_vaccinations (
     human_development_index DOUBLE
 );
 
-Step 5: Load Large CSV Files (Same Method for Both Tables)
-Load CovidDeaths.csv
+-- ------------------------------------------------------------
+-- STEP 6: Load CovidDeaths.csv (explicit column mapping + date parsing)
+-- ------------------------------------------------------------
 LOAD DATA LOCAL INFILE
 'C:/Users/ACER/OneDrive/Desktop/my_projects/SQL/Covid-Death-and-Vaccination-Analysis/CovidDeaths.csv'
 INTO TABLE covid_deaths
@@ -121,7 +125,9 @@ IGNORE 1 LINES
 )
 SET date = STR_TO_DATE(@date, '%Y-%m-%d');
 
-Load CovidVaccinations.csv
+-- ------------------------------------------------------------
+-- STEP 7: Load CovidVaccinations.csv (same ingestion method)
+-- ------------------------------------------------------------
 LOAD DATA LOCAL INFILE
 'C:/Users/ACER/OneDrive/Desktop/my_projects/SQL/Covid-Death-and-Vaccination-Analysis/CovidVaccinations.csv'
 INTO TABLE covid_vaccinations
@@ -151,21 +157,17 @@ IGNORE 1 LINES
 )
 SET date = STR_TO_DATE(@date, '%Y-%m-%d');
 
-Step 6: Verify Successful Ingestion
+-- ------------------------------------------------------------
+-- STEP 8: Verify successful ingestion
+-- ------------------------------------------------------------
 SELECT COUNT(*) FROM covid_deaths;
 SELECT COUNT(*) FROM covid_vaccinations;
 
 SELECT * FROM covid_deaths LIMIT 10;
 SELECT * FROM covid_vaccinations LIMIT 10;
 
-Final Notes
-
-Large CSV files were imported using CMD + LOAD DATA LOCAL INFILE
-
-Same ingestion strategy applied to both datasets
-
-Table schemas were defined explicitly to avoid datatype issues
-
-Full row and column ingestion verified successfully
-
-Data was then ready for analytical SQL queries
+-- ------------------------------------------------------------
+-- END
+-- Large CSV files successfully ingested using CMD/Git Bash
+-- Data ready for analytical SQL queries
+-- ------------------------------------------------------------
