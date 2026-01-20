@@ -1,21 +1,21 @@
 # Large CSV File Upload into MySQL Using CMD
 
-(My Portfolio Project Ingestion Process)
+# (My Portfolio Project Ingestion Process)
 
-This document explains how I uploaded large CSV files into MySQL using Command Prompt (CMD) for my portfolio project.
+# This document explains how I uploaded large CSV files into MySQL using Command Prompt (CMD) for my portfolio project.
 
-Database was created in MySQL Workbench
+# Database was created in MySQL Workbench
 
-All remaining steps were executed via CMD
+# All remaining steps were executed via CMD
 
-Data source: https://ourworldindata.org/covid-deaths
+# Data source: https://ourworldindata.org/covid-deaths
 
-Step 1: Start MySQL from CMD with Local File Support
+# Step 1: Start MySQL from CMD with Local File Support
 "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" --local-infile=1 -u root -p
 
-Step 2: Enable and Verify Local File Loading
-SET GLOBAL local_infile = 1;
-SHOW VARIABLES LIKE 'local_infile';
+# Step 2: Enable and Verify Local File Loading
+ SET GLOBAL local_infile = 1;
+ SHOW VARIABLES LIKE 'local_infile';
 
 
 Expected result:
