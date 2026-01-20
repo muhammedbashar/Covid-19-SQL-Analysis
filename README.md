@@ -21,7 +21,7 @@ The data is sourced from Our World in Data and was imported into MySQL using com
 
 * Git Bash / Command Prompt
 
-* MySQL Workbench (database setup only)
+* MySQL Workbench 
 
 ### Key Analysis Performed
 
